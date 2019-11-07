@@ -1,9 +1,7 @@
 import re
 import sys
-#import ctypes
 from win32 import win32console
 from colorama import Fore, init
-#ctypes.windll.kernel32.SetConsoleTitleW('IDX2TXT')
 win32console.SetConsoleTitle('IDX2TXT')
 init()
 print(Fore.GREEN + '    Обработка данных из IDX файла тахеометра\n\
@@ -24,7 +22,8 @@ format_data1 = []
 for row in data:
     row = row.replace('\n', '')
     row = row.replace('\t', '')
-    result = re.match(r'\d{8}', row)
+    row_list = row.split(',')
+    result = re.match(r'\d{2,}', row_list[0])
     if result:
         format_data.append(row)
 
@@ -45,7 +44,8 @@ print(Fore.RED, end='')
 answer = input('Сохранить файл (y/n)?:')
 if answer == 'y':
     file_output_name = file_input_name.upper()
-    file_output_name = file_output_name.replace('IDX', 'TXT')
+    file_output_name = file_output_name.replace('.IDX', '')
+    file_output_name = file_output_name + '_POINTS.TXT'
     with open(file_output_name, 'w') as f:
         for row in format_data1:
             print(row, file=f)
