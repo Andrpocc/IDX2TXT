@@ -1,4 +1,4 @@
-dist/
+dist/*
 build/
 __pycache__/
 .idea/
@@ -6,3 +6,4 @@ __pycache__/
 *.ico
 *.spec
 *.exe
+!dist/IDX2TXT.exe
