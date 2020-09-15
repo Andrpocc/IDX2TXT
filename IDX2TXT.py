@@ -2,14 +2,17 @@ import re
 import sys
 from win32 import win32console
 from colorama import Fore, init
+
 win32console.SetConsoleTitle('IDX2TXT')
 init()
+
 print(Fore.GREEN + '    Обработка данных из IDX файла тахеометра\n\
     Leica Builder 509')
-file_name = input('Введите путь к IDX файлу\
-(C:\\F_21PG1.IDX): ')
+file_name = input('Перенесите IDX файл в окно программы и нажмите Enter\n\
+(пример: C:\\F_21PG1.IDX): ')
 file_input_name_check = file_name.replace('\"', '')
 file_input_name = file_input_name_check.replace('\\', '/')
+
 try:
     with open(file_input_name, 'r') as f:
         data = f.readlines()
@@ -23,20 +26,20 @@ for row in data:
     row = row.replace('\n', '')
     row = row.replace('\t', '')
     row_list = row.split(',')
-    result = re.match(r'\d{2,}', row_list[0])
-    if result:
+    result = re.match(r'\d+', row_list[0])
+    if result and len(row_list) == 8:
         format_data.append(row)
 
 for row in format_data:
     row_list = row.split(',')
-    if len(row_list) == 8:
-        row_list.pop(-1)
-        row_list.pop(-1)
-        row_list.pop(-1)
-        row_list.pop(0)
-        row_list[0] = row_list[0].replace('"', '')
-        row = '\t'.join(row_list)
-        format_data1.append(row)
+    row_list.pop(-1)
+    row_list.pop(-1)
+    row_list.pop(-1)
+    row_list.pop(0)
+    row_list[0] = row_list[0].replace('"', '')
+    row = '\t'.join(row_list)
+    format_data1.append(row)
+
 print(Fore.RED + 'Точка\tY\t\tX\t\tZ')
 for row in format_data1:
     print(Fore.YELLOW + row)
@@ -52,8 +55,8 @@ if answer == 'y':
     try:
         with open(file_output_name, 'r') as f:
             check = f.read()
-        print(Fore.GREEN + 'Файл успешно сохранен!')
-        print('    Enter для выхода')
+        print(Fore.GREEN + 'Файл успешно сохранен!\n' + Fore.RED + file_output_name)
+        print(Fore.GREEN + '    Enter для выхода')
     except FileNotFoundError:
         print(Fore.GREEN + 'Ошибка сохранения файла!')
         print('    Enter для выхода')
