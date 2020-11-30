@@ -1,10 +1,11 @@
 dist/
+files/
+data/
 UI/
 build/
 __pycache__/
 .idea/
-*.txt
 *.ico
 *.spec
-*.exe
+
 
